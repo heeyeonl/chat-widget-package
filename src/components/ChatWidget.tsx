@@ -1,7 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react'
 import './ChatWidget.css'
 
-const defaultLogoUrl = 'https://raw.githubusercontent.com/heeyeonl/chat-widget-package/main/eloquent-logo.png';
+const API_URL = 'https://chat-widget-server.onrender.com/api/chat';
+const TITLE = 'Eloquent AI';
+const SUBTITLE = 'Ask me anything';
+const LOGO_URL = 'https://raw.githubusercontent.com/heeyeonl/chat-widget-package/main/eloquent-logo.png';
+const INITIAL_ONLINE_STATUS = true;
 // TODO: uncomment this for the real endpoint
 // const MAINTENANCE_STATUS_URL = 'https://api.eloquentai.co/maintenance-status';
 
@@ -48,13 +52,7 @@ export interface ChatWidgetProps {
 /**
  * A configurable chat widget component that can be embedded in any React application
  */
-export function ChatWidget({
-  apiUrl = 'http://localhost:3001/api/chat',
-  title = 'Eloquent AI',
-  subtitle = 'Ask me anything',
-  logoUrl = defaultLogoUrl,
-  initialOnlineStatus = true,
-}: ChatWidgetProps) {
+export function ChatWidget() {
   const [messages, setMessages] = useState<Message[]>([
     {
       id: 1,
@@ -65,7 +63,7 @@ export function ChatWidget({
   ])
   const [inputText, setInputText] = useState('')
   const [isOpen, setIsOpen] = useState(false)
-  const [isOnline, setIsOnline] = useState(initialOnlineStatus)
+  const [isOnline, setIsOnline] = useState(INITIAL_ONLINE_STATUS)
   const [maintenanceStatus, setMaintenanceStatus] = useState<MaintenanceStatus>({
     isInMaintenance: false,
     maintenanceMessage: "We're currently performing maintenance. Please try again later."
@@ -199,7 +197,7 @@ export function ChatWidget({
       setInputText('');
   
       try {
-        const res = await fetch(apiUrl, {
+        const res = await fetch(API_URL, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
@@ -266,9 +264,9 @@ export function ChatWidget({
       {isOpen && (
         <div className="chat-widget" ref={chatWidgetRef}>
           <div className="chat-header">
-            <img src={logoUrl} alt={title} />
+            <img src={LOGO_URL} alt={TITLE} />
             <div className="header-content">
-              <h2>{title}</h2>
+              <h2>{TITLE}</h2>
               <div className="status-indicator">
                 <span className={`status-dot ${isOnline ? 'online' : 'offline'}`}></span>
               </div>
@@ -296,14 +294,14 @@ export function ChatWidget({
           </div>
           <div className="chat-messages">
             <div className="chat-welcome">
-              <img src={logoUrl} alt={title} />
-              <h3>{title} responds instantly</h3>
-              <p>{subtitle}</p>
+              <img src={LOGO_URL} alt={TITLE} />
+              <h3>{TITLE} responds instantly</h3>
+              <p>{SUBTITLE}</p>
             </div>
             {messages.map((message) => (
               <div key={message.id} className={`message-container ${message.sender}`}>
                 {message.sender === 'support' && (
-                  <img src={logoUrl} alt={title} className="message-logo" />
+                  <img src={LOGO_URL} alt={TITLE} className="message-logo" />
                 )}
                 <div className={`message ${message.sender}`}>
                   {message.text}
