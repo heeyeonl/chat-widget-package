@@ -1,7 +1,24 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import './ChatWidget.css'
 
 const defaultLogoUrl = 'https://raw.githubusercontent.com/heeyeonl/chat-widget-package/main/eloquent-logo.png';
+// TODO: uncomment this for the real endpoint
+// const MAINTENANCE_STATUS_URL = 'https://api.eloquentai.co/maintenance-status';
+
+/**
+ * Interface for maintenance status response
+ */
+interface MaintenanceStatus {
+  isInMaintenance: boolean;
+  maintenanceMessage: string;
+}
+
+// Mock maintenance status data
+const mockMaintenanceStatus: MaintenanceStatus = {
+  isInMaintenance: true,
+  maintenanceMessage: "We're currently performing maintenance. Please try again later."
+};
+
 /**
  * Interface for individual chat messages
  */
@@ -24,10 +41,8 @@ export interface ChatWidgetProps {
   subtitle?: string
   /** URL for the logo image */
   logoUrl?: string
-  /** URL for the "Powered by" link */
-  poweredByUrl?: string
-  /** Text for the "Powered by" link */
-  poweredByText?: string
+  /** Initial online status */
+  initialOnlineStatus?: boolean
 }
 
 /**
@@ -38,8 +53,7 @@ export function ChatWidget({
   title = 'Eloquent AI',
   subtitle = 'Ask me anything',
   logoUrl = defaultLogoUrl,
-  poweredByUrl = 'https://www.eloquentai.co/',
-  poweredByText = 'Eloquent AI'
+  initialOnlineStatus = true,
 }: ChatWidgetProps) {
   const [messages, setMessages] = useState<Message[]>([
     {
@@ -51,9 +65,121 @@ export function ChatWidget({
   ])
   const [inputText, setInputText] = useState('')
   const [isOpen, setIsOpen] = useState(false)
+  const [isOnline, setIsOnline] = useState(initialOnlineStatus)
+  const [maintenanceStatus, setMaintenanceStatus] = useState<MaintenanceStatus>({
+    isInMaintenance: false,
+    maintenanceMessage: "We're currently performing maintenance. Please try again later."
+  })
+  const chatWidgetRef = useRef<HTMLDivElement>(null)
+  const toggleButtonRef = useRef<HTMLButtonElement>(null)
+
+  // Mock maintenance status changes
+  useEffect(() => {
+    // TODO: uncomment this for the real endpoint
+    // const fetchMaintenanceStatus = async () => {
+    //   try {
+    //     const response = await fetch(MAINTENANCE_STATUS_URL);
+    //     if (!response.ok) {
+    //       throw new Error('Failed to fetch maintenance status');
+    //     }
+    //     const data = await response.json();
+    //     setMaintenanceStatus(data);
+    //   } catch (error) {
+    //     console.error('Error fetching maintenance status:', error);
+    //   }
+    // };
+
+    // fetchMaintenanceStatus();
+    // const interval = setInterval(fetchMaintenanceStatus, 30000);
+
+    // return () => clearInterval(interval);
+
+    // Mock maintenance status set up ---- remove this part when the real api is implemented.
+    // Initial status is not in maintenance
+    setMaintenanceStatus({
+      isInMaintenance: false,
+      maintenanceMessage: "We're currently performing maintenance. Please try again later."
+    });
+
+    const startMaintenanceCycle = () => {
+      const maintenanceTimer = setTimeout(() => {
+        setMaintenanceStatus(mockMaintenanceStatus);
+        const normalTimer = setTimeout(() => {
+          setMaintenanceStatus({
+            isInMaintenance: false,
+            maintenanceMessage: "We're currently performing maintenance. Please try again later."
+          });
+          startMaintenanceCycle();
+        }, 5000); // 5 seconds
+
+        return () => clearTimeout(normalTimer);
+      }, 30000); // 30 seconds
+
+      return () => clearTimeout(maintenanceTimer);
+    };
+
+    const cleanup = startMaintenanceCycle();
+    return () => {
+      cleanup();
+    };
+  }, []);
+
+  // Track user activity for online/offline status
+  useEffect(() => {
+    let inactivityTimer: number;
+
+    const handleUserActivity = () => {
+      if (inactivityTimer) {
+        clearTimeout(inactivityTimer);
+      }
+      
+      setIsOnline(true);
+      
+      inactivityTimer = window.setTimeout(() => {
+        setIsOnline(false);
+      }, 10000);
+    };
+
+    window.addEventListener('mousemove', handleUserActivity);
+    window.addEventListener('mousedown', handleUserActivity);
+    window.addEventListener('keydown', handleUserActivity);
+    window.addEventListener('touchstart', handleUserActivity);
+
+    handleUserActivity();
+
+    return () => {
+      window.removeEventListener('mousemove', handleUserActivity);
+      window.removeEventListener('mousedown', handleUserActivity);
+      window.removeEventListener('keydown', handleUserActivity);
+      window.removeEventListener('touchstart', handleUserActivity);
+      if (inactivityTimer) {
+        clearTimeout(inactivityTimer);
+      }
+    };
+  }, []);
+
+  // Handle click outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        isOpen &&
+        chatWidgetRef.current &&
+        !chatWidgetRef.current.contains(event.target as Node) &&
+        toggleButtonRef.current &&
+        !toggleButtonRef.current.contains(event.target as Node)
+      ) {
+        setIsOpen(false)
+      }
+    }
+
+    document.addEventListener('mousedown', handleClickOutside)
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside)
+    }
+  }, [isOpen])
 
   const handleSendMessage = async () => {
-    if (inputText.trim()) {
+    if (inputText.trim() && !maintenanceStatus.isInMaintenance) {
       const newMessage: Message = {
         id: messages.length + 1,
         text: inputText,
@@ -108,6 +234,7 @@ export function ChatWidget({
   return (
     <>
       <button 
+        ref={toggleButtonRef}
         className="chat-toggle-button"
         onClick={() => setIsOpen(!isOpen)}
         aria-label="Toggle chat"
@@ -128,10 +255,36 @@ export function ChatWidget({
       </button>
       
       {isOpen && (
-        <div className="chat-widget">
+        <div className="chat-widget" ref={chatWidgetRef}>
           <div className="chat-header">
             <img src={logoUrl} alt={title} />
-            <h2>{title}</h2>
+            <div className="header-content">
+              <h2>{title}</h2>
+              <div className="status-indicator">
+                <span className={`status-dot ${isOnline ? 'online' : 'offline'}`}></span>
+                <span className="status-text">{isOnline ? 'Online' : 'Offline'}</span>
+              </div>
+            </div>
+            <button 
+              className="close-button"
+              onClick={() => setIsOpen(false)}
+              aria-label="Close chat"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <line x1="18" y1="6" x2="6" y2="18"></line>
+                <line x1="6" y1="6" x2="18" y2="18"></line>
+              </svg>
+            </button>
           </div>
           <div className="chat-messages">
             <div className="chat-welcome">
@@ -152,15 +305,36 @@ export function ChatWidget({
               </div>
             ))}
           </div>
+          {maintenanceStatus.isInMaintenance && (
+            <div className="maintenance-banner">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"></path>
+                <path d="M12 8v4"></path>
+                <path d="M12 16h.01"></path>
+              </svg>
+              <span>{maintenanceStatus.maintenanceMessage}</span>
+            </div>
+          )}
           <div className="chat-input">
             <input
               type="text"
               value={inputText}
               onChange={(e) => setInputText(e.target.value)}
               onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
-              placeholder="Type a message..."
+              placeholder={maintenanceStatus.isInMaintenance ? "Chat is currently in maintenance" : "Type a message..."}
+              disabled={maintenanceStatus.isInMaintenance}
             />
-            <button onClick={handleSendMessage}>
+            <button onClick={handleSendMessage} disabled={maintenanceStatus.isInMaintenance}>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
@@ -173,7 +347,7 @@ export function ChatWidget({
             </button>
           </div>
           <div className="chat-footer">
-            <p>Powered by <a href={poweredByUrl}>{poweredByText}</a></p>
+            <p>Powered by <a href="https://www.eloquentai.co/" target="_blank" rel="noopener noreferrer">Eloquent AI</a></p>
           </div>
         </div>
       )}
