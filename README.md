@@ -9,7 +9,6 @@ A modern, AI-powered chat widget for React applications, powered by OpenAI's GPT
 * 💬 **Live Chat UI** – Smooth interface with auto-scroll and typing support
 * 🛠️ **Maintenance Mode** – Gracefully disables input and shows a banner when offline
 * 📱 **Responsive Design** – Mobile-friendly, works across all screen sizes
-* 🔌 **Backend Integration** – Easily connect to your own or hosted OpenAI proxy
 * 🔐 **Secure Architecture** – API key remains server-side; frontend communicates via API
 
 ---
