@@ -1,3 +1,8 @@
+:root {
+  --brand-color: #6f33b7;
+  --brand-color-hover: #CD5A86;
+}
+
 * {
     font-family: Geist, Arial, sans-serif
 }
@@ -9,7 +14,7 @@
   width: 60px;
   height: 60px;
   border-radius: 50%;
-  background: #6f33b7;
+  background-color: var(--brand-color);
   color: white;
   border: none;
   cursor: pointer;
@@ -23,7 +28,7 @@
 
 .chat-toggle-button:hover {
   transform: scale(1.05);
-  background: #CD5A86;
+  background-color: var(--brand-color-hover);
 }
 
 .chat-toggle-button svg {
@@ -189,7 +194,7 @@
 }
 
 .message.user {
-  background: #6f33b7;
+  background-color: var(--brand-color);
   color: white;
   border-bottom-right-radius: 5px;
 }
@@ -222,7 +227,7 @@
     width: 25px;
     height: 25px;
     transform: translateY(-50%);
-    background-color: #6f33b7;
+    background-color: var(--brand-color);
     color: white;
     border: none;
     padding: 4px;
@@ -236,7 +241,7 @@
 }
 
 .chat-input button:hover {
-    background: #CD5A86;
+    background-color: var(--brand-color-hover);
 }
 
 .chat-footer {

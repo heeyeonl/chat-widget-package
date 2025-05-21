@@ -2,12 +2,11 @@ import React, { useState, useEffect, useRef } from 'react'
 import './ChatWidget.css'
 
 const API_URL = 'https://chat-widget-server.onrender.com/api/chat';
-const TITLE = 'Eloquent AI';
-const SUBTITLE = 'Ask me anything';
-const LOGO_URL = 'https://raw.githubusercontent.com/heeyeonl/chat-widget-package/main/eloquent-logo.png';
-const INITIAL_ONLINE_STATUS = true;
-// TODO: uncomment this for the real endpoint
-// const MAINTENANCE_STATUS_URL = 'https://api.eloquentai.co/maintenance-status';
+const DEFAULT_LOGO = 'https://raw.githubusercontent.com/heeyeonl/chat-widget-package/main/eloquent-logo.png';
+const DEFAULT_TITLE = 'Eloquent AI';
+const DEFAULT_SUBTITLE = 'Ask me anything';
+const DEFAULT_BRAND_COLOR = '#6f33b7';
+const DEFAULT_HOVER_COLOR = '#CD5A86';
 
 /**
  * Interface for maintenance status response
@@ -16,12 +15,6 @@ interface MaintenanceStatus {
   isInMaintenance: boolean;
   maintenanceMessage: string;
 }
-
-// Mock maintenance status data
-const mockMaintenanceStatus: MaintenanceStatus = {
-  isInMaintenance: true,
-  maintenanceMessage: "We're currently performing maintenance. Please try again later."
-};
 
 /**
  * Interface for individual chat messages
@@ -37,25 +30,31 @@ export interface Message {
  * Configuration props for the ChatWidget component
  */
 export interface ChatWidgetProps {
-  /** API endpoint for chat messages */
-  apiUrl?: string
+  /** URL for the logo image */
+  logoUrl?: string
   /** Title displayed in the chat header */
   title?: string
   /** Subtitle displayed in the welcome message */
   subtitle?: string
-  /** URL for the logo image */
-  logoUrl?: string
-  /** Initial online status */
-  initialOnlineStatus?: boolean
+  /** Primary brand color for the chat widget */
+  brandColor?: string
+  /** Hover color for the chat widget */
+  hoverColor?: string
 }
 
 /**
  * A configurable chat widget component that can be embedded in any React application
  */
-export function ChatWidget() {
+export function ChatWidget({
+  logoUrl = DEFAULT_LOGO,
+  title = DEFAULT_TITLE,
+  subtitle = DEFAULT_SUBTITLE,
+  brandColor = DEFAULT_BRAND_COLOR,
+  hoverColor = DEFAULT_HOVER_COLOR
+}: ChatWidgetProps) {
   const [messages, setMessages] = useState<Message[]>([
     {
-      id: 1,
+      id: Date.now(),
       text: "Hello! How can I help you today?",
       sender: 'support',
       timestamp: new Date()
@@ -63,7 +62,7 @@ export function ChatWidget() {
   ])
   const [inputText, setInputText] = useState('')
   const [isOpen, setIsOpen] = useState(false)
-  const [isOnline, setIsOnline] = useState(INITIAL_ONLINE_STATUS)
+  const [isOnline, setIsOnline] = useState(true)
   const [maintenanceStatus, setMaintenanceStatus] = useState<MaintenanceStatus>({
     isInMaintenance: false,
     maintenanceMessage: "We're currently performing maintenance. Please try again later."
@@ -71,6 +70,12 @@ export function ChatWidget() {
   const chatWidgetRef = useRef<HTMLDivElement>(null)
   const toggleButtonRef = useRef<HTMLButtonElement>(null)
   const messagesEndRef = useRef<HTMLDivElement>(null)
+
+  // Update CSS variables when brand color changes
+  useEffect(() => {
+    document.documentElement.style.setProperty('--brand-color', brandColor);
+    document.documentElement.style.setProperty('--brand-color-hover', hoverColor);
+  }, [brandColor, hoverColor]);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
@@ -110,7 +115,10 @@ export function ChatWidget() {
 
     const startMaintenanceCycle = () => {
       const maintenanceTimer = setTimeout(() => {
-        setMaintenanceStatus(mockMaintenanceStatus);
+        setMaintenanceStatus({
+          isInMaintenance: true,
+          maintenanceMessage: "We're currently performing maintenance. Please try again later."
+        });
         const normalTimer = setTimeout(() => {
           setMaintenanceStatus({
             isInMaintenance: false,
@@ -188,7 +196,7 @@ export function ChatWidget() {
   const handleSendMessage = async () => {
     if (inputText.trim() && !maintenanceStatus.isInMaintenance) {
       const newMessage: Message = {
-        id: messages.length + 1,
+        id: Date.now(),
         text: inputText,
         sender: 'user',
         timestamp: new Date()
@@ -218,7 +226,7 @@ export function ChatWidget() {
         }
   
         const supportResponse: Message = {
-          id: messages.length + 2,
+          id: Date.now() + 1,
           text: data.reply,
           sender: 'support',
           timestamp: new Date()
@@ -228,7 +236,7 @@ export function ChatWidget() {
       } catch (error: Error | unknown) {
         console.error('Error sending message:', error);
         const errorMessage: Message = {
-          id: messages.length + 2,
+          id: Date.now() + 1,
           text: error instanceof Error ? error.message : 'Sorry, there was an error processing your message. Please try again.',
           sender: 'support',
           timestamp: new Date()
@@ -264,9 +272,9 @@ export function ChatWidget() {
       {isOpen && (
         <div className="chat-widget" ref={chatWidgetRef}>
           <div className="chat-header">
-            <img src={LOGO_URL} alt={TITLE} />
+            <img src={logoUrl} alt={title} />
             <div className="header-content">
-              <h2>{TITLE}</h2>
+              <h2>{title}</h2>
               <div className="status-indicator">
                 <span className={`status-dot ${isOnline ? 'online' : 'offline'}`}></span>
               </div>
@@ -294,14 +302,14 @@ export function ChatWidget() {
           </div>
           <div className="chat-messages">
             <div className="chat-welcome">
-              <img src={LOGO_URL} alt={TITLE} />
-              <h3>{TITLE} responds instantly</h3>
-              <p>{SUBTITLE}</p>
+              <img src={logoUrl} alt={title} />
+              <h3>{title} responds instantly</h3>
+              <p>{subtitle}</p>
             </div>
             {messages.map((message) => (
               <div key={message.id} className={`message-container ${message.sender}`}>
                 {message.sender === 'support' && (
-                  <img src={LOGO_URL} alt={TITLE} className="message-logo" />
+                  <img src={logoUrl} alt={title} className="message-logo" />
                 )}
                 <div className={`message ${message.sender}`}>
                   {message.text}
