@@ -1,6 +1,8 @@
 # Chat Widget
 
-A modern, AI-powered chat widget for React applications, powered by OpenAI's GPT-3.5 Turbo. This lightweight, customizable component adds intelligent, contextual support to your app with minimal setup.
+A modern, AI-powered chat widget built as part of a front-end technical assignment.
+
+This project was designed to simulate a production-ready npm package that could be embedded in any React application. The goal was to create a modular, brandable widget with a real-time chat UI, while also demonstrating best practices in API integration, UX state handling (like maintenance mode), and secure architecture.
 
 ## ✨ Features
 
@@ -86,9 +88,11 @@ I aimed to design a plug-and-play React component that provides AI-powered suppo
 
 ### Architectural Decisions:
 
-* **Frontend/Backend separation** to keep the API key secure and maintain proper layering
-* **CSS variable theming** to support easy brand customization without class rewriting
-* **Mocked maintenance mode** to simulate real-world behavior for future dynamic toggle support
+* **Frontend/Backend separation** to secure API keys and allow future flexibility (e.g., swapping GPT providers)
+* **Mocking edge-case states** (offline, maintenance) to simulate real-world usage patterns and support progressive enhancement
+* **Custom theming** using CSS variables to decouple logic from design
+
+> Trade-off: These modes are mocked — the code is structured to support real API integration later (e.g., via polling), but the actual implementation is commented out to stay focused on architecture and front-end behavior.
 
 ### Challenges Faced:
 
@@ -116,12 +120,14 @@ I aimed to design a plug-and-play React component that provides AI-powered suppo
 * Intelligent responses using OpenAI's GPT-3.5 Turbo
 * Context-aware conversations
 * Natural language understanding
+  * ⏳ Note*: The backend is deployed on Render’s free tier, which means it may take a few seconds to "cold start" when the chat is opened for the first time. In production, this could be improved by using a paid tier or deploying to a low-latency region.
 
 ### 🛠️ Maintenance Mode
 
-* Supports configurable maintenance periods with user-friendly messaging
-* While in maintenance mode, the chat input is disabled and a banner is shown
-* Currently, maintenance mode is simulated: it activates every 60 seconds and lasts for 10 seconds (mocked)
+* Simulates configurable maintenance periods with user-friendly messaging
+* While in maintenance mode, input is disabled and a banner is shown
+* **Currently mocked**: activates every 60 seconds and lasts 10 seconds for demo purposes
+  * For real-world use, the design supports pulling status from an external endpoint at a throttled interval — easily swappable when the backend is ready
 
 ### 🟢 Online/Offline Mode
 
