@@ -16,7 +16,7 @@ A customizable chat widget component for React applications that provides a seam
 ## Installation
 
 ```bash
-npm install @eloquentai/chat-widget
+npm install @heeyeonl/chat-widget
 ```
 
 ## Usage

@@ -1,6 +1,6 @@
 {
-  "name": "chat-widget",
-  "version": "1.0.0",
+  "name": "@heeyeonl/chat-widget",
+  "version": "3.0.1",
   "description": "A React chat widget component for embedding chat functionality in web applications",
   "type": "module",
   "main": "./dist/index.js",
@@ -22,14 +22,25 @@
   "keywords": [
     "chat",
     "widget",
-    "react"
+    "react",
+    "eloquent",
+    "ai",
+    "chatbot"
   ],
   "files": [
     "dist",
     "README.md"
   ],
-  "author": "",
+  "author": "Heeyeon Lee",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/heeyeonl/chat-widget-package"
+  },
+  "bugs": {
+    "url": "https://github.com/heeyeonl/chat-widget-package/issues"
+  },
+  "homepage": "https://github.com/heeyeonl/chat-widget-package#readme",
   "dependencies": {
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
