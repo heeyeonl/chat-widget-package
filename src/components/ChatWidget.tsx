@@ -72,6 +72,15 @@ export function ChatWidget({
   })
   const chatWidgetRef = useRef<HTMLDivElement>(null)
   const toggleButtonRef = useRef<HTMLButtonElement>(null)
+  const messagesEndRef = useRef<HTMLDivElement>(null)
+
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
+  }
+
+  useEffect(() => {
+    scrollToBottom()
+  }, [messages])
 
   // Mock maintenance status changes
   useEffect(() => {
@@ -262,7 +271,6 @@ export function ChatWidget({
               <h2>{title}</h2>
               <div className="status-indicator">
                 <span className={`status-dot ${isOnline ? 'online' : 'offline'}`}></span>
-                <span className="status-text">{isOnline ? 'Online' : 'Offline'}</span>
               </div>
             </div>
             <button 
@@ -298,12 +306,11 @@ export function ChatWidget({
                   <img src={logoUrl} alt={title} className="message-logo" />
                 )}
                 <div className={`message ${message.sender}`}>
-                  <div className="message-content">
-                    {message.text}
-                  </div>
+                  {message.text}
                 </div>
               </div>
             ))}
+            <div ref={messagesEndRef} />
           </div>
           {maintenanceStatus.isInMaintenance && (
             <div className="maintenance-banner">

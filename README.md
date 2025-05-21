@@ -1,36 +1,36 @@
-# Chat Widget
+# Eloquent AI Chat Widget
 
-A React chat widget component for embedding chat functionality in web applications.
+A customizable chat widget component for React applications that provides a seamless chat interface for your users.
+
+## Features
+
+- 🎨 Customizable appearance (logo, title, subtitle)
+- 💬 Real-time chat functionality
+- 🔄 Online/Offline status indicator
+- 🛠️ Maintenance mode support
+- 📱 Responsive design
+- ⌨️ Keyboard support (Enter to send)
+- 🖱️ Click outside to close
+- 🔍 Auto-scroll to latest messages
 
 ## Installation
 
 ```bash
-npm install chat-widget
-# or
-yarn add chat-widget
+npm install @eloquentai/chat-widget
 ```
 
 ## Usage
 
 ```jsx
-// Import the component
-import { ChatWidget } from 'chat-widget';
-// Import the styles
-import 'chat-widget/styles.css';
+import { ChatWidget } from '@eloquentai/chat-widget';
 
 function App() {
   return (
     <ChatWidget
-      apiEndpoint="https://your-api-endpoint.com/chat"
-      // Optional: Override the default logo
-      logoUrl="https://your-logo-url.png"
-      // Optional: Set initial online status
-      initialOnlineStatus={true}
-      // Add other props as needed
-      companyName="Your Company"
-      companyLogo="https://your-company-logo.png"
-      isInMaintenance={false}
-      maintenanceMessage="We're currently performing maintenance. Please try again later."
+      apiUrl="your-api-endpoint"
+      title="Your Chat Title"
+      subtitle="Your welcome message"
+      logoUrl="your-logo-url"
     />
   );
 }
@@ -38,34 +38,47 @@ function App() {
 
 ## Props
 
-| Prop | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| apiEndpoint | string | Yes | - | The endpoint URL for the chat API |
-| title | string | No | 'Eloquent AI' | Title displayed in the chat header |
-| subtitle | string | No | 'Ask me anything' | Subtitle displayed in the welcome message |
-| logoUrl | string | No | - | URL for the logo image |
-| initialOnlineStatus | boolean | No | true | Initial online status of the chat |
-| companyName | string | Yes | - | The name of your company |
-| companyLogo | string | Yes | - | URL to your company logo |
-| isInMaintenance | boolean | No | false | Whether the chat is in maintenance mode |
-| maintenanceMessage | string | No | "Chat is currently under maintenance. Please try again later." | Custom message to display during maintenance |
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `apiUrl` | string | 'http://localhost:3001/api/chat' | API endpoint for chat messages |
+| `title` | string | 'Eloquent AI' | Title displayed in the chat header |
+| `subtitle` | string | 'Ask me anything' | Subtitle displayed in the welcome message |
+| `logoUrl` | string | Eloquent AI logo | URL for the logo image |
+| `initialOnlineStatus` | boolean | true | Initial online status |
 
-## Features
+## Current Mock Implementations
 
-- Real-time chat interface
-- Online/Offline status indicator
-- Maintenance mode with customizable message
-- Customizable branding
-- Responsive design
-- TypeScript support
+### Online/Offline Status
+The widget currently includes a mock implementation of the online/offline status:
+- User is considered online when there's any activity (mouse movement, clicks, keyboard input, or touch)
+- After 10 seconds of inactivity, the status changes to offline
+- Status automatically returns to online when user activity is detected
+- This can be replaced with real status tracking from your backend
 
-## Assets
+### Maintenance Mode
+The widget includes a mock implementation of maintenance mode:
+- Maintenance mode activates every 30 seconds
+- Each maintenance period lasts for 5 seconds
+- During maintenance:
+  - A maintenance banner is displayed
+  - Chat input is disabled
+  - Users cannot send new messages
+- This mock implementation can be replaced with real maintenance status from the Eloquent AI endpoint in the future.
 
-The package includes a default logo at `chat-widget/assets/eloquent-logo.png`. You can:
-- Use the default logo by not specifying a `logoUrl` prop
-- Override it with your own logo by providing a `logoUrl` prop
-- Access the default logo directly: `import 'chat-widget/assets/eloquent-logo.png'`
+## Development
+
+```bash
+# Install dependencies
+npm install
+
+# Start development server
+npm start
+
+# Build the package
+npm run build
+```
 
 ## License
 
-MIT 
+MIT © [Eloquent AI](https://www.eloquentai.co/)
+

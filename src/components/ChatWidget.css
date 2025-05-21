@@ -1,6 +1,7 @@
 * {
     font-family: Geist, Arial, sans-serif
 }
+
 .chat-toggle-button {
   position: fixed;
   bottom: 20px;
@@ -61,8 +62,8 @@
 
 .header-content {
   display: flex;
-  flex-direction: column;
-  gap: 4px;
+  align-items: center;
+  gap: 8px;
   flex: 1;
 }
 
@@ -123,6 +124,7 @@
     width: 50px;
     height: 50px;
 }
+
 .close-button {
   position: absolute;
   right: 8px;
@@ -158,17 +160,10 @@
   gap: 10px;
 }
 
-.message {
-  max-width: 80%;
-  padding: 10px 15px;
-  border-radius: 15px;
-  margin: 5px 0;
-  font-size: 0.8rem;
-}
-
 .message-container {
     display: flex;
     align-items: center;
+    gap: 10px;
 }
 
 .message-container.support {
@@ -183,25 +178,26 @@
     width: 20px;
     height: 20px;
     border-radius: 50%; 
-    margin-right: 10px;
+}
+
+.message {
+  max-width: 80%;
+  padding: 10px 15px;
+  border-radius: 15px;
+  margin: 5px 0;
+  font-size: 0.8rem;
 }
 
 .message.user {
-  align-self: flex-end;
   background: #6f33b7;
   color: white;
   border-bottom-right-radius: 5px;
 }
 
 .message.support {
-  align-self: flex-start;
   background: #E0DFDD;
   color: #1f2937;
   border-bottom-left-radius: 5px;
-}
-
-.message-content {
-  margin-bottom: 5px;
 }
 
 .chat-input {
@@ -238,7 +234,6 @@
     width: 15px;
     height: 15px;
 }
-
 
 .chat-input button:hover {
     background: #CD5A86;
