@@ -102,7 +102,7 @@ export function ChatWidget({
     // };
 
     // fetchMaintenanceStatus();
-    // const interval = setInterval(fetchMaintenanceStatus, 30000);
+    // const interval = setInterval(fetchMaintenanceStatus, 60000);
 
     // return () => clearInterval(interval);
 
@@ -125,10 +125,10 @@ export function ChatWidget({
             maintenanceMessage: "We're currently performing maintenance. Please try again later."
           });
           startMaintenanceCycle();
-        }, 5000); // 5 seconds
+        }, 10000); // 10 seconds
 
         return () => clearTimeout(normalTimer);
-      }, 30000); // 30 seconds
+      }, 60000); // 1 minute
 
       return () => clearTimeout(maintenanceTimer);
     };

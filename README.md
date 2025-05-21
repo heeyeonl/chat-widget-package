@@ -88,7 +88,6 @@ I aimed to design a plug-and-play React component that provides AI-powered suppo
 ### Architectural Decisions:
 
 * **Frontend/Backend separation** to keep the API key secure and maintain proper layering
-* **External API URL prop** to allow flexibility for teams deploying their own backends
 * **CSS variable theming** to support easy brand customization without class rewriting
 * **Mocked maintenance mode** to simulate real-world behavior for future dynamic toggle support
 
@@ -123,7 +122,7 @@ I aimed to design a plug-and-play React component that provides AI-powered suppo
 
 * Supports configurable maintenance periods with user-friendly messaging
 * While in maintenance mode, the chat input is disabled and a banner is shown
-* Currently, maintenance mode is simulated: it activates every 30 seconds and lasts for 5 seconds (mocked)
+* Currently, maintenance mode is simulated: it activates every 60 seconds and lasts for 10 seconds (mocked)
 
 ### 🟢 Online/Offline Mode
 
