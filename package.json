@@ -13,11 +13,10 @@
       "import": "./dist/index.js",
       "require": "./dist/index.js"
     },
-    "./styles.css": "./dist/components/ChatWidget.css",
-    "./assets/*": "./dist/assets/*"
+    "./styles.css": "./dist/components/ChatWidget.css"
   },
   "scripts": {
-    "build": "tsc && cp src/components/ChatWidget.css dist/components/ && mkdir -p dist/assets && cp src/assets/* dist/assets/",
+    "build": "tsc && cp src/components/ChatWidget.css dist/components/",
     "prepare": "npm run build"
   },
   "keywords": [

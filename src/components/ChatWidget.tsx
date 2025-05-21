@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import './ChatWidget.css'
 
-const defaultLogoUrl = './src/assets/eloquent-logo.png';
+const defaultLogoUrl = 'https://raw.githubusercontent.com/heeyeonl/chat-widget-package/main/eloquent-logo.png';
 /**
  * Interface for individual chat messages
  */

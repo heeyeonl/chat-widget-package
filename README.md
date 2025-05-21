@@ -23,7 +23,7 @@ function App() {
     <ChatWidget
       apiEndpoint="https://your-api-endpoint.com/chat"
       // Optional: Override the default logo
-      logoUrl="path/to/your/logo.png"
+      logoUrl="https://your-logo-url.png"
       // Add other props as needed
     />
   );
@@ -37,7 +37,7 @@ function App() {
 | apiEndpoint | string | Yes | The endpoint URL for the chat API |
 | title | string | No | Title displayed in the chat header (default: 'Eloquent AI') |
 | subtitle | string | No | Subtitle displayed in the welcome message (default: 'Ask me anything') |
-| logoUrl | string | No | URL for the logo image (default: 'chat-widget/assets/eloquent-logo.png') |
+| logoUrl | string | No | URL for the logo image (default: uses the Eloquent AI logo) |
 | poweredByUrl | string | No | URL for the "Powered by" link |
 | poweredByText | string | No | Text for the "Powered by" link |
 
