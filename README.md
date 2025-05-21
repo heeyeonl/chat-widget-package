@@ -88,7 +88,7 @@ I aimed to design a plug-and-play React component that provides AI-powered suppo
 
 ### Architectural Decisions:
 
-* **Frontend/Backend separation** to secure API keys and allow future flexibility (e.g., swapping GPT providers)
+* **Frontend/Backend separation** To secure the OpenAI API key, I built a lightweight Express server that proxies requests to OpenAI. The key is stored in a `.env` file and never exposed to the frontend. You can [view the full server code here](https://github.com/heeyeonl/chat-widget-server).
 * **Mocking edge-case states** (offline, maintenance) to simulate real-world usage patterns and support progressive enhancement
 * **Custom theming** using CSS variables to decouple logic from design
 
