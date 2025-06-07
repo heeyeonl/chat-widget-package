@@ -2,10 +2,10 @@ import React, { useState, useEffect, useRef } from 'react'
 import './ChatWidget.css'
 
 const API_URL = 'https://chat-widget-server.onrender.com/api/chat';
-const DEFAULT_LOGO = 'https://raw.githubusercontent.com/heeyeonl/chat-widget-package/main/eloquent-logo.png';
-const DEFAULT_TITLE = 'Eloquent AI';
+const DEFAULT_LOGO = 'https://raw.githubusercontent.com/heeyeonl/chat-widget-package/main/logo.png';
+const DEFAULT_TITLE = 'Chat AI';
 const DEFAULT_SUBTITLE = 'Ask me anything';
-const DEFAULT_BRAND_COLOR = '#6f33b7';
+const DEFAULT_BRAND_COLOR = '#4981ba';
 const DEFAULT_HOVER_COLOR = '#CD5A86';
 
 /**
@@ -345,7 +345,7 @@ export function ChatWidget({
             </button>
           </div>
           <div className="chat-footer">
-            <p>Powered by <a href="https://www.eloquentai.co/" target="_blank" rel="noopener noreferrer">Eloquent AI</a></p>
+            <p>Built by <a href="https://www.heeyeonlee.com" target="_blank" rel="noopener noreferrer">Heeyeon Lee</a></p>
           </div>
         </div>
       )}

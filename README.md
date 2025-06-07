@@ -106,8 +106,8 @@ I aimed to design a plug-and-play React component that provides AI-powered suppo
 
 | Prop         | Type     | Default                                                                                   | Description                             |
 | ------------ | -------- | ----------------------------------------------------------------------------------------- | --------------------------------------- |
-| `logoUrl`    | `string` | `"https://raw.githubusercontent.com/heeyeonl/chat-widget-package/main/eloquent-logo.png"` | URL of your company logo                |
-| `title`      | `string` | `"Eloquent AI"`                                                                           | Title displayed in the chat header      |
+| `logoUrl`    | `string` | `"https://raw.githubusercontent.com/heeyeonl/chat-widget-package/main/logo.png"` | URL of your company logo                |
+| `title`      | `string` | `"Chat AI"`                                                                           | Title displayed in the chat header      |
 | `subtitle`   | `string` | `"Ask me anything"`                                                                       | Subtitle displayed in the chat          |
 | `brandColor` | `string` | `"#6f33b7"`                                                                               | Primary brand color for the chat widget |
 
